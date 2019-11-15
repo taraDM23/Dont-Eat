@@ -59,10 +59,9 @@ $("#button-search").on("click", function RenderOutput(event) {
                 var resVote = resList[i].restaurant.user_rating.votes;
                 console.log(resVote)
 
-                //not working so far
-                /*  var resultsDiv = $("<div>");
-                 resultsDiv.append(resName, resAddress, resRate, resVote);
-                 $("#results-box").append(resultsDiv); */
+                var resultsDiv = $("<div>");
+                resultsDiv.append(resName, resAddress, resRate, resVote);
+                $(".results-box").append(resultsDiv);
             }
         });
 })
