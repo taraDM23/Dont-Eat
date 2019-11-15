@@ -50,17 +50,44 @@ $("#button-search").on("click", function RenderOutput(event) {
             console.log(resList)
 
             for (i = 0; 1 < resList.length; i++) {
+                //Div to store results  
+                var resultsDiv = $("<div>");
+                resultsDiv.addClass("resultDisplay")
+
+                // GET restaurant name
                 var resName = resList[i].restaurant.name;
                 console.log(resName)
-                var resAddress = resList[i].restaurant.location.address;
-                console.log(resAddress)
+
+                //creating element
+                var Name = $("<h4>").text(resName);
+
+                //display element
+                resultsDiv.append(Name);
+
+                // GET restaurant rating
                 var resRate = resList[i].restaurant.user_rating.aggregate_rating;
                 console.log(resRate)
+
+                // GET restaurant vote
                 var resVote = resList[i].restaurant.user_rating.votes;
                 console.log(resVote)
 
-                var resultsDiv = $("<div>");
-                resultsDiv.append(resName, resAddress, resRate, resVote);
+                //creating element
+                var Rating = $("<p>").text(resRate + " from " + resVote + " votes.");
+
+                //display element
+                resultsDiv.append(Rating);
+
+                // GET restaurant address
+                var resAddress = resList[i].restaurant.location.address;
+                console.log(resAddress)
+
+                //creating element
+                var Address = $("<p>").text(resAddress);
+
+                //display element
+                resultsDiv.append(Address);
+
                 $(".results-box").append(resultsDiv);
             }
         });
