@@ -6,6 +6,7 @@ var APIKEY = "AIzaSyC2oUjR2yrGCAnp3Hdor_NFVpNfCUyVUAE"; //google maps api
 
 // var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=" + APIKEY;
 
+//this url is using my own address, you can change this is you want or not
 var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=17+avatar+way,+officer,+melbourne&key=" + APIKEY;
 
 
@@ -19,6 +20,7 @@ $.ajax({
 
     console.log(response);
 
+    //this is the pathway to get to the lat and long
     console.log(response.results[0].geometry.location);
   
 
