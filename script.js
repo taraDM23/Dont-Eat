@@ -1,16 +1,9 @@
-//Api URL = http://api.openweathermap.org/data/2.5/forecast?id=524901&APPID={APIKEY}
-//Api key = b15f97422ba66d215ee17499ebc5b83b
-//api.openweathermap.org/data/2.5/weather?q=London
-
 var APIKEY = "AIzaSyC2oUjR2yrGCAnp3Hdor_NFVpNfCUyVUAE"; //google maps api
-
-// var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=" + APIKEY;
 
 //this url is using my own address, you can change this is you want or not
 var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=new+york&key=" + APIKEY;
 
 //var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=17+avatar+way,+officer,+melbourne&key=" + APIKEY;
-
 
 
 $.ajax({
@@ -29,34 +22,19 @@ $.ajax({
   });
 
   function initMap(response) {
-    // The location of Uluru
-    //console.log(response)
-   // var uluru = {lat: -25.344, lng: 131.036};
-
-   //new york coord
-   var cord = {lat: 40.7803833333, lng: -73.9530416667}
+   //var cord = {lat: 40.7803833333, lng: -73.9530416667} //new york
+    var cord = {lat:40.7055210000 , lng:-74.0069060000 }
+    var cord2 = {lat:40.7355210000 , lng:-74.1069060000 }
 
     //var cor = (response.results[0].geometry.location);
-
-   // var lat = (response.results[0].geometry.location.lat)
-   // var lng = (response.results[0].geometry.location.lng) 
 
     // The map, will be centered around the lat and lng
     var map = new google.maps.Map(
         document.getElementById('map'), {zoom: 6, center: cord});
     // The marker, positioned at Uluru
     var marker = new google.maps.Marker({position: cord, map: map});
+    var marker2 = new google.maps.Marker({position: cord2, map: map});
   }
 
-//   // Initialize and add the map
-// function initMap() {
-//   // The location of Uluru
-//   var uluru = {lat: -25.344, lng: 131.036};
-//   // The map, centered at Uluru
-//   var map = new google.maps.Map(
-//       document.getElementById('map'), {zoom: 4, center: uluru});
-//   // The marker, positioned at Uluru
-//   var marker = new google.maps.Marker({position: uluru, map: map});
-// }
 
   
