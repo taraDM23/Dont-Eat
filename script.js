@@ -7,7 +7,9 @@ var APIKEY = "AIzaSyC2oUjR2yrGCAnp3Hdor_NFVpNfCUyVUAE"; //google maps api
 // var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=" + APIKEY;
 
 //this url is using my own address, you can change this is you want or not
-var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=17+avatar+way,+officer,+melbourne&key=" + APIKEY;
+var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=new+york&key=" + APIKEY;
+
+//var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=17+avatar+way,+officer,+melbourne&key=" + APIKEY;
 
 
 
@@ -28,17 +30,22 @@ $.ajax({
 
   function initMap(response) {
     // The location of Uluru
-    console.log(response)
+    //console.log(response)
    // var uluru = {lat: -25.344, lng: 131.036};
-    var cor = (response.results[0].geometry.location);
+
+   //new york coord
+   var cord = {lat: 40.7803833333, lng: -73.9530416667}
+
+    //var cor = (response.results[0].geometry.location);
+
    // var lat = (response.results[0].geometry.location.lat)
    // var lng = (response.results[0].geometry.location.lng) 
 
-    // The map, centered at Uluru
+    // The map, will be centered around the lat and lng
     var map = new google.maps.Map(
-        document.getElementById('map'), {zoom: 6, center: cor});
+        document.getElementById('map'), {zoom: 6, center: cord});
     // The marker, positioned at Uluru
-    var marker = new google.maps.Marker({position: cor, map: map});
+    var marker = new google.maps.Marker({position: cord, map: map});
   }
 
 //   // Initialize and add the map
