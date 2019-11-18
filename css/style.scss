@@ -1,0 +1,27 @@
+$colours: (
+  dark: #2A2D43,
+  light: #FFA9E7,
+  white: #FFF
+);
+
+@function colour($colour-name) {
+  @return map-get($colours, $colour-name)
+}
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,400,400i,700,900&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-size: 16px;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+}
+
+
