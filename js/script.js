@@ -5,20 +5,17 @@ $("#button-search").on("click", function RenderOutput(event) {
 
   // get cuisine input from HTML
   var cuisineInput = $("#input-cuisine").val();
-  console.log({cuisineInput});
 
-  // define lat & long
-  var lat = "40.742051";
-  var lon = "-74.004821";
+  // define lat & long global variables
+  var lat;
+  var lon;
 
-  // API query URL
-  var queryURL = "https://developers.zomato.com/api/v2.1/search?q=" + cuisineInput + "&count=30&lat=" + lat + "&lon=" + lon + "&radius=3&sort=rating&order=asc"
+  // API call to get city details
+  let searchCity = "New York"
+  let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
 
-  // API call to list cuisines
-  let cuisineURL = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`
-  
   $.ajax({
-    url: cuisineURL,
+    url: cityURL,
     method: "GET",
     headers: {
       "Accept": "application/json",
@@ -26,79 +23,127 @@ $("#button-search").on("click", function RenderOutput(event) {
     }
   })
   .then(function(response) {
-    let cuisines = response.cuisines;
-    console.log(cuisines);
 
-    // convert cuisines array into object
-    // object has cuisine_name and cuisine_id
-    let cuisinesObj = {};
-    for(let i = 0; i < cuisines.length; i++) {
-      cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
-    };
+    let cityName = response.location_suggestions[0].city_name;
+    let cityCountry = response.location_suggestions[0].country_name;
 
-    console.log({cuisinesObj});
-  });
+    let city = (cityName + ", " + cityCountry);
+    console.log({city}); 
 
+    let lat = response.location_suggestions[0].latitude;
+    let lon = response.location_suggestions[0].longitude;
 
+    console.log(lat + " & " + lon);
 
-
-
-
-  // AJAX API call
   
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET",
-  //   headers: {
-  //     "Accept": "application/json",
-  //     "user-key": "911458285a16e49504124550033c5a36"
-  //   }
-  // })
-  // .then(function(response) {
-  //   console.log(response);
-  //   var resList = response.restaurants;
-  //   console.log(resList)
+  
+    // API call to list cuisines
+    let cuisineURL = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`;
 
-  //   for (i = 0; 1 < resList.length; i++) {
-  //     //Div to store results  
-  //     var resultsDiv = $("<div>");
-  //     resultsDiv.addClass("resultDisplay")
+    $.ajax({
+      url: cuisineURL,
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "user-key": "911458285a16e49504124550033c5a36"
+      }
+    })
+    .then(function(response) {
+      let cuisines = response.cuisines;
 
-  //     // GET restaurant name
-  //     var resName = resList[i].restaurant.name;
-  //     console.log(resName)
+      // convert cuisines array into object
+      // object has cuisine_name and cuisine_id
+      let cuisinesObj = {};
+      for(let i = 0; i < cuisines.length; i++) {
+        cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
+      };
 
-  //     //creating element
-  //     var Name = $("<h4>").text(resName);
+      console.log({cuisinesObj});
+    })
 
-  //     //display element
-  //     resultsDiv.append(Name);
+    // run main search API
+    let cuisineId = 3;
 
-  //     // GET restaurant rating
-  //     var resRate = resList[i].restaurant.user_rating.aggregate_rating;
-  //     console.log(resRate)
+    let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
+  
+    $.ajax({
+      url: searchURL,
+      method: "GET",
+      headers: {
+        "Accept": "application/json",
+        "user-key": "911458285a16e49504124550033c5a36"
+      }
+    })
+    .then(function(response) {
+      const restaurantArray = response.restaurants;
+      console.log(restaurantArray);
 
-  //     // GET restaurant vote
-  //     var resVote = resList[i].restaurant.user_rating.votes;
-  //     console.log(resVote)
+      let latLonObj = {}
+      for(let i = 0; i < restaurantArray.length; i++) {
+        let lat = restaurantArray[i].restaurant.location.latitude;
+        let lon = restaurantArray[i].restaurant.location.longitude;
 
-  //     //creating element
-  //     var Rating = $("<p>").text(resRate + " from " + resVote + " votes.");
+        latLonObj[lat] = lon;
+      }
+      console.log(latLonObj);
 
-  //     //display element
-  //     resultsDiv.append(Rating);
+      let resultsDiv = $("<div>");
+      let restaurantLocation = [];
+      for(let i = 0; i < restaurantArray.length; i++) {
 
-  //     // GET restaurant address
-  //     var resAddress = resList[i].restaurant.location.address;
-  //     console.log(resAddress)
+        const restaurantData = restaurantArray[i].restaurant
+        const restaurant = restaurantData.name;
+        const address = restaurantData.location.address;
+        const rating = restaurantData.user_rating.aggregate_rating;
+        const ratingText = restaurantData.user_rating.rating_text;
 
-  //     //creating element
-  //     var Address = $("<p>").text(resAddress);
+        const {
+          restaurant: {
+            location: {
+              latitude,
+              longitude,
+            }
+          }
+        } = restaurantArray[i];
 
-  //     //display element
-  //     resultsDiv.append(Address);
+        restaurantLocation.push(
+          {
+            name: restaurant,
+            lat: latitude,
+            long: longitude
+          }
+        );  
+        
 
-  //     $(".results-box").append(resultsDiv);
-  //   }
-  // });
+        console.log(restaurantLocation);
+
+        // const photosArray = restaurantData.photos;
+        // let photos = [];
+        
+        // if(photosArray) {
+        //   for(let i = 0; i < photosArray.length; i++) {
+        //     photos.push(photosArray[i].photo.thumb_url);
+        //   };
+        // } else {
+        //   photos.push("https://via.placeholder.com/200");
+        // }
+        const photos = "https://via.placeholder.com/200";
+        
+        resultsDiv.append(restaurant);
+        resultsDiv.append(address);
+        resultsDiv.append(rating);
+        resultsDiv.append(ratingText);
+        for(let i = 0; i < photos.length; i++) {
+          let img = $("<img>").attr("src", photos[i]);
+          resultsDiv.append(img);
+        };
+      };
+
+      $("results-box").append(resultsDiv);
+        
+    
+
+    })
+  })
 });
+
