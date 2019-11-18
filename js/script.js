@@ -4,7 +4,16 @@ $("#button-search").on("click", function RenderOutput(event) {
   event.preventDefault();
 
   // get cuisine input from HTML
-  var cuisineInput = $("#input-cuisine").val();
+  var cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
+  var cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
+
+  let cuisinesObj = {};
+  let cuisineId;
+
+
+
+  // get city input from HTML
+  var cityInput = $("#input-city").val();
 
   // define lat & long global variables
   var lat;
@@ -12,6 +21,7 @@ $("#button-search").on("click", function RenderOutput(event) {
 
   // API call to get city details
   let searchCity = "New York"
+
   let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
 
   $.ajax({
@@ -49,21 +59,29 @@ $("#button-search").on("click", function RenderOutput(event) {
       }
     })
     .then(function(response) {
-      let cuisines = response.cuisines;
+      let {cuisines} = response;
 
       // convert cuisines array into object
       // object has cuisine_name and cuisine_id
-      let cuisinesObj = {};
+      
       for(let i = 0; i < cuisines.length; i++) {
         cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
       };
 
       console.log({cuisinesObj});
+
+      if (!cuisinesObj[cuisineInputFormatted]) {
+        alert("Sorry, " + cuisineInputFormatted + " food is not available in your area. Please search for something else");
+        return;
+      }
+
+      // run main search API
+    // let cuisineId = 3;
+    cuisineId = parseInt(cuisinesObj[cuisineInputFormatted]);
+    console.log({cuisineId});
     })
 
-    // run main search API
-    let cuisineId = 3;
-
+  // let cuisineId = 3;
     let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
   
     $.ajax({
@@ -77,15 +95,6 @@ $("#button-search").on("click", function RenderOutput(event) {
     .then(function(response) {
       const restaurantArray = response.restaurants;
       console.log(restaurantArray);
-
-      let latLonObj = {}
-      for(let i = 0; i < restaurantArray.length; i++) {
-        let lat = restaurantArray[i].restaurant.location.latitude;
-        let lon = restaurantArray[i].restaurant.location.longitude;
-
-        latLonObj[lat] = lon;
-      }
-      console.log(latLonObj);
 
       let resultsDiv = $("<div>");
       let restaurantLocation = [];
@@ -115,8 +124,6 @@ $("#button-search").on("click", function RenderOutput(event) {
         );  
         
 
-        console.log(restaurantLocation);
-
         // const photosArray = restaurantData.photos;
         // let photos = [];
         
@@ -127,21 +134,21 @@ $("#button-search").on("click", function RenderOutput(event) {
         // } else {
         //   photos.push("https://via.placeholder.com/200");
         // }
-        const photos = "https://via.placeholder.com/200";
+        const photos = "https://via.placeholder.com/100";
         
         resultsDiv.append(restaurant);
         resultsDiv.append(address);
         resultsDiv.append(rating);
         resultsDiv.append(ratingText);
-        for(let i = 0; i < photos.length; i++) {
-          let img = $("<img>").attr("src", photos[i]);
-          resultsDiv.append(img);
-        };
+        let img = $("<img>").attr("src", photos);
+        resultsDiv.append(img);
       };
+      console.log(restaurantLocation);
 
-      $("results-box").append(resultsDiv);
+
+      $("div.results-box").append(resultsDiv);
         
-    
+      
 
     })
   })
