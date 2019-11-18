@@ -75,74 +75,75 @@ $("#button-search").on("click", function RenderOutput(event) {
       }
     })
     .then(function(response) {
-      console.log(response);
-      
+      const restaurantArray = response.restaurants;
+      console.log(restaurantArray);
+
+      let latLonObj = {}
+      for(let i = 0; i < restaurantArray.length; i++) {
+        let lat = restaurantArray[i].restaurant.location.latitude;
+        let lon = restaurantArray[i].restaurant.location.longitude;
+
+        latLonObj[lat] = lon;
+      }
+      console.log(latLonObj);
+
+      let resultsDiv = $("<div>");
+      let restaurantLocation = [];
+      for(let i = 0; i < restaurantArray.length; i++) {
+
+        const restaurantData = restaurantArray[i].restaurant
+        const restaurant = restaurantData.name;
+        const address = restaurantData.location.address;
+        const rating = restaurantData.user_rating.aggregate_rating;
+        const ratingText = restaurantData.user_rating.rating_text;
+
+        const {
+          restaurant: {
+            location: {
+              latitude,
+              longitude,
+            }
+          }
+        } = restaurantArray[i];
+
+        restaurantLocation.push(
+          {
+            name: restaurant,
+            lat: latitude,
+            long: longitude
+          }
+        );  
+        
+
+        console.log(restaurantLocation);
+
+        // const photosArray = restaurantData.photos;
+        // let photos = [];
+        
+        // if(photosArray) {
+        //   for(let i = 0; i < photosArray.length; i++) {
+        //     photos.push(photosArray[i].photo.thumb_url);
+        //   };
+        // } else {
+        //   photos.push("https://via.placeholder.com/200");
+        // }
+        const photos = "https://via.placeholder.com/200";
+        
+        resultsDiv.append(restaurant);
+        resultsDiv.append(address);
+        resultsDiv.append(rating);
+        resultsDiv.append(ratingText);
+        for(let i = 0; i < photos.length; i++) {
+          let img = $("<img>").attr("src", photos[i]);
+          resultsDiv.append(img);
+        };
+      };
+
+      $("results-box").append(resultsDiv);
+        
+    
+
     })
-  
-
-
-
-
-
-
-  // AJAX API call
-  // API query URL
-  // var queryURL = "https://developers.zomato.com/api/v2.1/search?q=" + cuisineInput + "&count=30&lat=" + lat + "&lon=" + lon + "&radius=3&sort=rating&order=asc"
-
-  // $.ajax({
-  //   url: queryURL,
-  //   method: "GET",
-  //   headers: {
-  //     "Accept": "application/json",
-  //     "user-key": "911458285a16e49504124550033c5a36"
-  //   }
-  // })
-  // .then(function(response) {
-  //   console.log(response);
-  //   var resList = response.restaurants;
-  //   console.log(resList)
-
-  //   for (i = 0; 1 < resList.length; i++) {
-  //     //Div to store results  
-  //     var resultsDiv = $("<div>");
-  //     resultsDiv.addClass("resultDisplay")
-
-  //     // GET restaurant name
-  //     var resName = resList[i].restaurant.name;
-  //     console.log(resName)
-
-  //     //creating element
-  //     var Name = $("<h4>").text(resName);
-
-  //     //display element
-  //     resultsDiv.append(Name);
-
-  //     // GET restaurant rating
-  //     var resRate = resList[i].restaurant.user_rating.aggregate_rating;
-  //     console.log(resRate)
-
-  //     // GET restaurant vote
-  //     var resVote = resList[i].restaurant.user_rating.votes;
-  //     console.log(resVote)
-
-  //     //creating element
-  //     var Rating = $("<p>").text(resRate + " from " + resVote + " votes.");
-
-  //     //display element
-  //     resultsDiv.append(Rating);
-
-  //     // GET restaurant address
-  //     var resAddress = resList[i].restaurant.location.address;
-  //     console.log(resAddress)
-
-  //     //creating element
-  //     var Address = $("<p>").text(resAddress);
-
-  //     //display element
-  //     resultsDiv.append(Address);
-
-  //     $(".results-box").append(resultsDiv);
-  //   }
-  // });
   })
 });
+
