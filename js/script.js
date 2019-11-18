@@ -115,7 +115,6 @@ $("#button-search").on("click", function RenderOutput(event) {
         );  
         
 
-        console.log(restaurantLocation);
 
         // const photosArray = restaurantData.photos;
         // let photos = [];
@@ -133,17 +132,22 @@ $("#button-search").on("click", function RenderOutput(event) {
         resultsDiv.append(address);
         resultsDiv.append(rating);
         resultsDiv.append(ratingText);
-        for(let i = 0; i < photos.length; i++) {
-          let img = $("<img>").attr("src", photos[i]);
-          resultsDiv.append(img);
-        };
+        let img = $("<img>").attr("src", photos);
+        resultsDiv.append(img);
       };
+      console.log(restaurantLocation);
 
-      $("results-box").append(resultsDiv);
+      
+
+      $("div.results-box").append(resultsDiv);
         
-    
+      //here
+      
 
     })
+
+    
+
   })
 });
 
