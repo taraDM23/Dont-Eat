@@ -13,7 +13,7 @@ list displayed will be displayed based on lowest score 1 -
 ## UX
 * user can enter postcode
 * enter radius
-* search  cuisine
+* search cuisine
 * return suburb on a map
 * return restaurants based on cuisine that are entered
 * display the results as a list (and map)

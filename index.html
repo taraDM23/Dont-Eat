@@ -1,4 +1,8 @@
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Don't Eat</title>
@@ -6,43 +10,43 @@
 
 <body>
 
+	<header>
+		<h1>Don't Eat</h1>
+	</header>
 
-  <header>
-    <h1>Don't Eat</h1>
-  </header>
+	<main>
 
-  <main>
+		<section class="search-container">
+			<form class="form" action="#">
+				<div class="form-box">
+					<input type="text" id="input-city" placeholder="City">
+				</div>
+				<div class="form-box">
+					<input type="text" id="input-cuisine" placeholder="Cuisine">
+				</div>
+				<div class="form-box">
+					<button id="button-search">Search</button>
+				</div>
+			</form>
+		</section>
 
-    <section class="search-container">
-      <form class="form" action="#">
-        <div class="form-box">
-          <input type="text" id="input-city" placeholder="City">
-        </div>
-        <div class="form-box">
-          <input type="text" id="input-cuisine" placeholder="Cuisine">
-        </div>
-        <div class="form-box">
-          <button id="button-search">Search</button>
-        </div>  
-      </form>
-    </section>
+		<section class="map-container">
+			<div class="map-box"></div>
+		</section>
 
-    <section class="map-container">
-      <div class="map-box"></div>
-    </section>
+		<section class="results-container">
+			<div class="results-box"></div>
+		</section>
 
-    <section class="results-container">
-      <div class="results-box"></div>
-    </section>
+	</main>
 
-  </main>
+	<footer>
+		<p>&copy; Underwater Squad</p>
+	</footer>
 
-  <footer>
-    <p>&copy; Underwater Squad</p>
-  </footer>
-
-  <!-- JS -->
-  <!-- <script src="js/script.js"></script> -->
+	<!-- JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+	<script src="js/script.js"></script>
 </body>
 
-</html> 
+</html>
