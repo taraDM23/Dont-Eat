@@ -19,9 +19,12 @@ $.ajax({
   });
 
 
-  function initMap(response) {
+  function initMap(response){
     console.log(response);
-   //var cord = {lat: 40.7803833333, lng: -73.9530416667} //new york
+
+    //Add for in loop to add all the 20 restuarants markers on map
+    
+
     var coord = {lat:40.7055210000 , lng:-74.0069060000 }
     var coord2 = {lat:40.7355210000 , lng:-74.1069060000 }
     

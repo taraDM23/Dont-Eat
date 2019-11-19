@@ -58,7 +58,7 @@ $("#button-search").on("click", function RenderOutput(event) {
         cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
       };
 
-      console.log({cuisinesObj});
+      //console.log({cuisinesObj});
     })
 
     // run main search API
@@ -66,6 +66,8 @@ $("#button-search").on("click", function RenderOutput(event) {
 
     let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
   
+    
+
     $.ajax({
       url: searchURL,
       method: "GET",
@@ -76,7 +78,7 @@ $("#button-search").on("click", function RenderOutput(event) {
     })
     .then(function(response) {
       const restaurantArray = response.restaurants;
-      console.log(restaurantArray);
+      //console.log(restaurantArray);
 
       let latLonObj = {}
       for(let i = 0; i < restaurantArray.length; i++) {
@@ -85,7 +87,7 @@ $("#button-search").on("click", function RenderOutput(event) {
 
         latLonObj[lat] = lon;
       }
-      console.log(latLonObj);
+      //console.log(latLonObj);
 
       let resultsDiv = $("<div>");
       let restaurantLocation = [];
@@ -110,22 +112,11 @@ $("#button-search").on("click", function RenderOutput(event) {
           {
             name: restaurant,
             lat: latitude,
-            long: longitude
+            lng: longitude
           }
         );  
         
 
-
-        // const photosArray = restaurantData.photos;
-        // let photos = [];
-        
-        // if(photosArray) {
-        //   for(let i = 0; i < photosArray.length; i++) {
-        //     photos.push(photosArray[i].photo.thumb_url);
-        //   };
-        // } else {
-        //   photos.push("https://via.placeholder.com/200");
-        // }
         const photos = "https://via.placeholder.com/200";
         
         resultsDiv.append(restaurant);
@@ -142,12 +133,64 @@ $("#button-search").on("click", function RenderOutput(event) {
       $("div.results-box").append(resultsDiv);
         
       //here
+    })
+  })
+  var APIKEY = "AIzaSyC2oUjR2yrGCAnp3Hdor_NFVpNfCUyVUAE"; //google maps api
+
+  var queryURL = "https:maps.googleapis.com/maps/api/geocode/json?address=new+york&key=" + APIKEY;
+  //console.log(restaurantLocation);
+
+
+  $.ajax({
+      url: queryURL,
+      method: "Get"
+    })
+    .then(function(response){
+    // console.log(queryURL);
+
+      console.log(response);
+
+      //this is the pathway to get to the lat and long
+      console.log(response.results[0].geometry.location);
+      
+      initMap(response)
+    });
+
+
+    function initMap(response){
+      console.log(response);
+
+      //Add for in loop to add all the 20 restuarants markers on map
       
 
-    })
+      var coord = {lat:40.7055210000 , lng:-74.0069060000 }
+      var coord2 = {lat:40.7355210000 , lng:-74.1069060000 }
+      
+      //use for in loop
+      // var cordObj = { "40.7055210000": "-74.0069060000", 
+      //               "40.7173833333": "-73.9943916667"}
+      
+      var coordArr = [
+        coord,
+        coord2
+      ];
+      
+      //var cor = (response.results[0].geometry.location);
 
-    
+      // The map, will be centered around the lat and lng
+      var map = new google.maps.Map(
+          document.getElementById("map"), {zoom: 6, center: coord});
+      for (let i = 0; i < coordArr.length; i++) {
+        const coord = coordArr[i];
+        new google.maps.Marker({position: coord, map: map});
+        console.log("inside for so no issue")
 
-  })
+      }
+      //var marker2 = new google.maps.Marker({position: cord2, map: map});
+    }
+
+
 });
+
+
 
