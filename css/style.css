@@ -122,6 +122,7 @@ main .results-container .results-div .text .details {
 
 main .results-container .results-div .text .restaurant {
   font-weight: 700;
+  font-size: 1.2 rem;
 }
 
 main .results-container .results-div .text .rating {
