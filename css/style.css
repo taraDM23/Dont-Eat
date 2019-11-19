@@ -16,12 +16,13 @@ body, html {
 
 body {
   font-family: 'Montserrat', sans-serif;
+  background-color: #2A2D43;
 }
 
 body #bg {
-  -webkit-clip-path: polygon(0 75%, 100% 25%, 100% 100%, 0% 100%);
-          clip-path: polygon(0 75%, 100% 25%, 100% 100%, 0% 100%);
-  background-color: #2A2D43;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 25%, 0 75%);
+          clip-path: polygon(0 0, 100% 0, 100% 25%, 0 75%);
+  background-color: #FFF;
   width: 100%;
   height: 100%;
   position: absolute;
@@ -34,6 +35,7 @@ h1 {
 }
 
 main {
+  grid-area: main;
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr;
@@ -49,6 +51,27 @@ main .search-container {
   grid-area: search;
 }
 
+main .search-container form .form-box {
+  margin-bottom: 10px;
+}
+
+main .search-container form .form-box #input-city, main .search-container form .form-box #input-cuisine {
+  width: 335px;
+  height: 2rem;
+  text-indent: 20px;
+}
+
+main .search-container form .form-box #button-search {
+  width: 335px;
+  height: 2.5rem;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 20px;
+  border: none;
+  margin-top: 20px;
+  background-color: #FFA9E7;
+}
+
 main .map-container {
   -ms-grid-row: 2;
   -ms-grid-column: 1;
@@ -56,14 +79,59 @@ main .map-container {
 }
 
 main .map-container .map-box {
-  height: 300px;
-  width: 300px;
-  background: #FFF;
+  height: 335px;
+  width: 335px;
+  background-color: lightgray;
 }
 
 main .results-container {
   -ms-grid-row: 3;
   -ms-grid-column: 1;
   grid-area: results;
+}
+
+main .results-container .results-div {
+  background-color: #FFF;
+  margin: 0 20px 20px 20px;
+  padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .results-container .results-div .img {
+  display: inline-block;
+}
+
+main .results-container .results-div .text {
+  color: #2A2D43;
+  display: inline-block;
+  padding-left: 20px;
+}
+
+main .results-container .results-div .text .details {
+  line-height: 1.4;
+}
+
+main .results-container .results-div .text .restaurant {
+  font-weight: 700;
+}
+
+main .results-container .results-div .text .rating {
+  color: #f3333c;
+  font-weight: 700;
+}
+
+footer {
+  grid-area: footer;
+  background-color: #FFF;
+  text-align: center;
 }
 /*# sourceMappingURL=style.css.map */
