@@ -123,13 +123,19 @@ function RenderOutput() {
           const photos = "https://via.placeholder.com/100";
             
           // ==================== display results ====================
+            let resDiv = $("<div/>", {"class": "restaurant"}).append(restaurant);
+            resultsDiv.append(resDiv);
+
+            let addDiv = $("<div/>", {"class": "address"}).append(address);
+            resultsDiv.append(addDiv);
+
+            let ratDiv = $("<div/>", {"class": "rating"}).append(rating + " - " + ratingText);
+            resultsDiv.append(ratDiv);
             
-            resultsDiv.append(restaurant);
-            resultsDiv.append(address);
-            resultsDiv.append(rating);
-            resultsDiv.append(ratingText);
+            
             let img = $("<img>").attr("src", photos);
-            resultsDiv.append(img);
+            let imgDiv = $("<div/>", {"class": "img"}).append(img);
+            resultsDiv.append(imgDiv);
           
         };
     
