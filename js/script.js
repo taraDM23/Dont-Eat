@@ -83,13 +83,13 @@ function RenderOutput() {
         const restaurantArray = response.restaurants;
         console.log(restaurantArray);
     
-        let resultsDiv = $("<div>");
         let restaurantLocation = [];
         for(let i = 0; i < restaurantArray.length; i++) {
     
           const restaurantData = restaurantArray[i].restaurant
           const restaurant = restaurantData.name;
-          const address = restaurantData.location.address;
+          const address = restaurantData.location.address.substring(0, restaurantData.location.address.indexOf(',')+1);
+          const addressCity = restaurantData.location.address.substring(restaurantData.location.address.indexOf(',')+1);
           const rating = restaurantData.user_rating.aggregate_rating;
           const ratingText = restaurantData.user_rating.rating_text;
     
@@ -123,23 +123,31 @@ function RenderOutput() {
           const photos = "https://via.placeholder.com/100";
             
           // ==================== display results ====================
-            let resDiv = $("<div/>", {"class": "restaurant"}).append(restaurant);
-            resultsDiv.append(resDiv);
+          let textDiv = $("<div/>", {"class": "text"});
 
-            let addDiv = $("<div/>", {"class": "address"}).append(address);
-            resultsDiv.append(addDiv);
+          let resultsDiv = $("<div>", {"class": "results-div"});
 
-            let ratDiv = $("<div/>", {"class": "rating"}).append(rating + " - " + ratingText);
-            resultsDiv.append(ratDiv);
-            
-            
-            let img = $("<img>").attr("src", photos);
-            let imgDiv = $("<div/>", {"class": "img"}).append(img);
-            resultsDiv.append(imgDiv);
+          let resDiv = $("<div/>", {"class": "restaurant details"}).append(restaurant);
+          textDiv.append(resDiv);
+
+          let addDiv = $("<div/>", {"class": "address details"}).append(address);
+          textDiv.append(addDiv);
+
+          let addCityDiv = $("<div/>", {"class": "address-city details"}).append(addressCity);
+          textDiv.append(addCityDiv);
+
+          let ratDiv = $("<div/>", {"class": "rating details"}).append(rating + " - " + ratingText);
+          textDiv.append(ratDiv);
           
+          let img = $("<img>").attr("src", photos);
+          let imgDiv = $("<div/>", {"class": "img"}).append(img);
+          resultsDiv.append(imgDiv);
+        
+          resultsDiv.append(textDiv);
+          $("div.results-box").append(resultsDiv);
         };
     
-        $("div.results-box").append(resultsDiv);
+        
     
       }) 
     
