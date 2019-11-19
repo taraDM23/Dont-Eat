@@ -120,7 +120,8 @@ function RenderOutput() {
           // } else {
           //   photos.push("https://via.placeholder.com/200");
           // }
-          const photos = "https://via.placeholder.com/100";
+          // const photos = "https://via.placeholder.com/100";
+          const photos = "http://lorempixel.com/100/100/food/";
             
           // ==================== display results ====================
           let textDiv = $("<div/>", {"class": "text"});
