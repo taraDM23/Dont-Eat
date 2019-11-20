@@ -40,7 +40,9 @@ main {
   display: grid;
   -ms-grid-columns: 1fr;
       grid-template-columns: 1fr;
-      grid-template-areas: "search" "map" "results";
+      grid-template-areas: "search"
+ "map"
+ "results";
   justify-items: center;
   gap: 20px;
 }
@@ -81,7 +83,7 @@ main .map-container {
 main .map-container .map-box {
   height: 335px;
   width: 335px;
-  background-color: #FFF;
+  /* background-color: #FFF; */
 }
 
 main .results-container {
