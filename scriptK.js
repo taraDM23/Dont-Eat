@@ -23,7 +23,8 @@ $.ajax({
     console.log(response);
 
     //Add for in loop to add all the 20 restuarants markers on map
-    
+    //console.log(restaurantLocation + "inside scriptK");
+
 
     var coord = {lat:40.7055210000 , lng:-74.0069060000 }
     var coord2 = {lat:40.7355210000 , lng:-74.1069060000 }
@@ -43,13 +44,19 @@ $.ajax({
     var map = new google.maps.Map(
         document.getElementById("map"), {zoom: 6, center: coord});
     for (let i = 0; i < coordArr.length; i++) {
-      const coord = coordArr[i];
-      new google.maps.Marker({position: coord, map: map});
+      const coord1 = coordArr[i];
+      new google.maps.Marker({position: coord1, map: map});
       console.log("inside for so no issue")
 
     }
     //var marker2 = new google.maps.Marker({position: cord2, map: map});
   }
 
+  
 
+
+
+
+  // [Violation] Added non-passive event listener to a scroll-blocking <some> event.
+  //  Consider marking event handler as 'passive' to make the page more responsive. See <URL>
   
