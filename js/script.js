@@ -152,7 +152,22 @@ function RenderOutput() {
     
         // =================== lat lon API here ===================
 
-        restaurantLocation
+       // restaurantLocation
+      for(i=0; i<restaurantLocation.length; i++){
+        var pos1 = {
+          lat: parseFloat(restaurantLocation[i].lat),
+          lng: parseFloat(restaurantLocation[i].long)
+        };
+        new google.maps.Marker({position: pos1 , map: map});
+
+
+      }
+      var pos2 = {
+        lat: lat,
+        lng: lon
+      }; 
+        map.setCenter(pos2);
+
         // ===========================================================
     
       }) 
@@ -165,8 +180,8 @@ function RenderOutput() {
 // ======================Keegans code =========================
 function initMap() {
   // Step 1
-  var map = new google.maps.Map(
-    document.querySelector(".map-box"), {zoom: 8, center: {lat: 0, lng: 0}});
+  map = new google.maps.Map(
+    document.querySelector(".map-box"), {zoom: 10, center: {lat: 0, lng: 0}});
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
