@@ -1,0 +1,146 @@
+$colours: (
+  dark: #2A2D43,
+  light: #FFA9E7,
+  white: #FFF
+);
+
+@function colour($colour-name) {
+  @return map-get($colours, $colour-name)
+}
+
+@import url('https://fonts.googleapis.com/css?family=Montserrat:100,400,400i,700,900&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-size: 16px;
+}
+
+body, html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: colour(dark);
+
+  #bg {
+    clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
+    background-color: colour(white);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: -1;
+  }
+}
+
+//  ==================== header ====================
+h1  {
+  text-align: center;
+  padding: 20px 0 40px 0;
+}
+
+// ==================== main ====================
+main  {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas: 
+    "search"
+    "map"
+    "results"
+    ;
+  justify-items: center;
+  gap: 20px;
+
+  .search-container {
+    grid-area: search;
+
+    form {
+
+      .form-box {
+        margin-bottom: 10px;
+
+        #input-city, #input-cuisine {
+          width: 335px;
+          height: 2rem;
+          text-indent: 20px;
+        }
+
+        #button-search {
+          width: 335px;
+          height: 2.5rem;
+          text-align: center;
+          font-weight: 700;
+          border-radius: 20px;
+          border: none;
+          margin-top: 20px;
+          background-color: colour(light);
+        }
+      }
+    }
+  }
+
+  .map-container {
+    grid-area: map;
+    
+    .map-box {
+      height: 335px;
+      width: 335px;
+      background-color: colour(white);
+    }
+  }
+
+  .results-container {
+    grid-area: results;
+
+    .results-div {
+      background-color: colour(white);
+      margin: 0 20px 20px 20px;
+      padding: 10px;
+
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      // justify-content: center;
+      
+
+      .img {
+        display: inline-block;
+      }
+
+      .text {
+        color: colour(dark);
+        display: inline-block;
+        padding-left: 20px;
+
+        .details {
+          line-height: 1.4;
+        }
+        
+        .restaurant {
+          font-weight: 700;
+          font-size: 1.2 rem;
+        }
+
+        .rating {
+          color: rgb(243, 51, 60);
+          font-weight: 700;
+        }
+      }
+    }
+  }
+}
+
+// ==================== footer ====================
+footer {
+  grid-area: footer;
+  background-color: colour(white);
+  text-align: center;
+}
+
+

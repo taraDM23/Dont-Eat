@@ -1,18 +1,22 @@
-//On click event that runs dashboard
-$("#button-search").on("click", function RenderOutput(event) {
-  // prevent form default activity
-  event.preventDefault();
+// ==================== global variables ====================
+let cuisinesObj = {};
+let cuisineId;
 
-  // get cuisine input from HTML
-  
-  var cuisineInput = $("#input-cuisine").val();
+var cuisineInput;
+var cuisineInputFormatted;
 
-  // define lat & long global variables
-  var lat;
-  var lon;
+var cityInput = $("#input-city").val().trim();
+let searchCity = "New York" // hard coded for now
 
-  // API call to get city details
-  let searchCity = "New York"
+var lat;
+var lon;
+
+// ==================== functions ====================
+function RenderOutput() {
+  cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
+  cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
+
+  // ==================== city API ====================
   let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
 
   $.ajax({
@@ -31,13 +35,12 @@ $("#button-search").on("click", function RenderOutput(event) {
     let city = (cityName + ", " + cityCountry);
     console.log({city}); 
 
-    let lat = response.location_suggestions[0].latitude;
-    let lon = response.location_suggestions[0].longitude;
+    lat = response.location_suggestions[0].latitude;
+    lon = response.location_suggestions[0].longitude;
 
     console.log(lat + " & " + lon);
 
-
-    // API call to list cuisines
+    // ==================== cuisines API ====================
     let cuisineURL = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`;
 
     $.ajax({
@@ -49,128 +52,111 @@ $("#button-search").on("click", function RenderOutput(event) {
       }
     })
     .then(function(response) {
-      let cuisines = response.cuisines;
-
-      // convert cuisines array into object
-      // object has cuisine_name and cuisine_id
-
-      let cuisinesObj = {};
+      let {cuisines} = response;
+      
       for(let i = 0; i < cuisines.length; i++) {
         cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
       };
 
       console.log({cuisinesObj});
-    })
 
-    // run main search API
-    let cuisineId = 3;
-    let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
-  
-    $.ajax({
-      url: searchURL,
-      method: "GET",
-      headers: {
-        "Accept": "application/json",
-        "user-key": "911458285a16e49504124550033c5a36"
+      if (!cuisinesObj[cuisineInputFormatted]) {
+        alert("Sorry, " + cuisineInputFormatted + " food is not available in your area. Please search for something else");
+        return;
       }
-    })
-    .then(function(response) {
-      const restaurantArray = response.restaurants;
-      console.log(restaurantArray);
 
-      let latLonObj = {}
-      for(let i = 0; i < restaurantArray.length; i++) {
-        let lat = restaurantArray[i].restaurant.location.latitude;
-        let lon = restaurantArray[i].restaurant.location.longitude;
-        latLonObj[lat] = lon;
-      }
-      console.log(latLonObj);
+      cuisineId = parseInt(cuisinesObj[cuisineInputFormatted]);
+      console.log({cuisineId});
 
-      let restaurantLocation = [];
-
-      for(let i = 0; i < restaurantArray.length; i++) {
-        
-        let resultsDiv = $("<div>");
-        resultsDiv.addClass("resultsClass")
-        const restaurantData = restaurantArray[i].restaurant
-
-        const restaurant = restaurantData.name;
-        var restaurantDiv = $("<div>").text(restaurant);
-        restaurantDiv.addClass("restaurantClass")
-        resultsDiv.append(restaurantDiv);
-
-        const address = restaurantData.location.address;
-        var addressDiv = $("<div>").text(address);
-        addressDiv.addClass("addressClass")
-        resultsDiv.append(addressDiv);
-
-        const rating = restaurantData.user_rating.aggregate_rating;
-        var ratingDiv = $("<div>").text(rating);
-        ratingDiv.addClass("ratingClass")
-        resultsDiv.append(ratingDiv);
-
-        const ratingText = restaurantData.user_rating.rating_text;
-        var ratingTextDiv = $("<div>").text(ratingText);
-        ratingTextDiv.addClass("ratingTextClass")
-        resultsDiv.append(ratingTextDiv); 
-
- /*      const photosArray = restaurantData.photos
-      console.log(photosArray)
-      for( j = 0; j < photosArray.length; j++) {
-      const imgData = photosArray[j];
-      console.log(imgData)
-      var photoCount = restaurantData.photo_count
-      var imgURL = imgData.photo.url;
-      let img = $("<img>").attr("src", imgURL);
-      img.addClass("imageClass");
-      resultsDiv.append(img);
-      }
-       if (photosArray == true) {
-        renderPhoto()
-      }
-      else {
-      var noImg = $("<p> "+ "No images to display" +"</p>");
-      resultsDiv.append(noImg);
-      }} */
+      // ==================== search API ====================
+      let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
     
-        const {
-          restaurant: {
-            location: {
-              latitude,
-              longitude,
+      $.ajax({
+        url: searchURL,
+        method: "GET",
+        headers: {
+          "Accept": "application/json",
+          "user-key": "911458285a16e49504124550033c5a36"
+        }
+      })
+      .then(function(response) {
+        const restaurantArray = response.restaurants;
+        console.log(restaurantArray);
+    
+        let restaurantLocation = [];
+        for(let i = 0; i < restaurantArray.length; i++) {
+    
+          const restaurantData = restaurantArray[i].restaurant
+          const restaurant = restaurantData.name;
+          const address = restaurantData.location.address.substring(0, restaurantData.location.address.indexOf(',')+1);
+          const addressCity = restaurantData.location.address.substring(restaurantData.location.address.indexOf(',')+1);
+          const rating = restaurantData.user_rating.aggregate_rating;
+          const ratingText = restaurantData.user_rating.rating_text;
+    
+          const {
+            restaurant: {
+              location: {
+                latitude,
+                longitude,
+              }
             }
-          }
-        } = restaurantArray[i];
+          } = restaurantArray[i];
+    
+          restaurantLocation.push(
+            {
+              name: restaurant,
+              lat: latitude,
+              long: longitude
+            }
+          );  
+          
+          // const photosArray = restaurantData.photos;
+          // let photos = [];
+          
+          // if(photosArray) {
+          //   for(let i = 0; i < photosArray.length; i++) {
+          //     photos.push(photosArray[i].photo.thumb_url);
+          //   };
+          // } else {
+          //   photos.push("https://via.placeholder.com/200");
+          // }
+          // const photos = "https://via.placeholder.com/100";
+          const photos = "http://lorempixel.com/100/100/food/";
+            
+          // ==================== display results ====================
+          let textDiv = $("<div/>", {"class": "text"});
 
-        restaurantLocation.push(
-          {
-            name: restaurant,
-            lat: latitude,
-            long: longitude
-          }
-        );   
-        console.log(restaurantLocation);
+          let resultsDiv = $("<div>", {"class": "results-div"});
 
-         // const photosArray = restaurantData.photos;
-        // let photos = [];
+          let resDiv = $("<div/>", {"class": "restaurant details"}).append(restaurant);
+          textDiv.append(resDiv);
+
+          let addDiv = $("<div/>", {"class": "address details"}).append(address);
+          textDiv.append(addDiv);
+
+          let addCityDiv = $("<div/>", {"class": "address-city details"}).append(addressCity);
+          textDiv.append(addCityDiv);
+
+          let ratDiv = $("<div/>", {"class": "rating details"}).append(rating + " - " + ratingText);
+          textDiv.append(ratDiv);
+          
+          let img = $("<img>").attr("src", photos);
+          let imgDiv = $("<div/>", {"class": "img"}).append(img);
+          resultsDiv.append(imgDiv);
         
-        // if(photosArray) {
-        //   for(let i = 0; i < photosArray.length; i++) {
-        //     photos.push(photosArray[i].photo.thumb_url);
-        //   };
-        // } else {
-        //   photos.push("https://via.placeholder.com/200");
-        // }
-        //const photos = "https://via.placeholder.com/200";
-
-        /*  for(let i = 0; i < photos.length; i++) {
-          let img = $("<img>").attr("src", photos[i]);
-          resultsDiv.append(img);
-        }; */
-           
-        $(".results-box").append(resultsDiv);
-      };
+          resultsDiv.append(textDiv);
+          $("div.results-box").append(resultsDiv);
+        };
+    
+        
+    
+      }) 
+    
     })
+    
   })
-});
 
+};
+
+// ==================== event listeners ====================
+$("#button-search").on("click", RenderOutput);
