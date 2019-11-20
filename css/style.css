@@ -1,0 +1,138 @@
+@import url("https://fonts.googleapis.com/css?family=Montserrat:100,400,400i,700,900&display=swap");
+*, *::before, *::after {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-size: 16px;
+}
+
+body, html {
+  height: 100%;
+}
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #2A2D43;
+}
+
+body #bg {
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
+          clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
+  background-color: #FFF;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: -1;
+}
+
+h1 {
+  text-align: center;
+  padding: 20px 0 40px 0;
+}
+
+main {
+  grid-area: main;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr;
+      grid-template-columns: 1fr;
+      grid-template-areas: "search" "map" "results";
+  justify-items: center;
+  gap: 20px;
+}
+
+main .search-container {
+  -ms-grid-row: 1;
+  -ms-grid-column: 1;
+  grid-area: search;
+}
+
+main .search-container form .form-box {
+  margin-bottom: 10px;
+}
+
+main .search-container form .form-box #input-city, main .search-container form .form-box #input-cuisine {
+  width: 335px;
+  height: 2rem;
+  text-indent: 20px;
+}
+
+main .search-container form .form-box #button-search {
+  width: 335px;
+  height: 2.5rem;
+  text-align: center;
+  font-weight: 700;
+  border-radius: 20px;
+  border: none;
+  margin-top: 20px;
+  background-color: #FFA9E7;
+}
+
+main .map-container {
+  -ms-grid-row: 2;
+  -ms-grid-column: 1;
+  grid-area: map;
+}
+
+main .map-container .map-box {
+  height: 335px;
+  width: 335px;
+  background-color: #FFF;
+}
+
+main .results-container {
+  -ms-grid-row: 3;
+  -ms-grid-column: 1;
+  grid-area: results;
+}
+
+main .results-container .results-div {
+  background-color: #FFF;
+  margin: 0 20px 20px 20px;
+  padding: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+main .results-container .results-div .img {
+  display: inline-block;
+}
+
+main .results-container .results-div .text {
+  color: #2A2D43;
+  display: inline-block;
+  padding-left: 20px;
+}
+
+main .results-container .results-div .text .details {
+  line-height: 1.4;
+}
+
+main .results-container .results-div .text .restaurant {
+  font-weight: 700;
+  font-size: 1.2 rem;
+}
+
+main .results-container .results-div .text .rating {
+  color: #f3333c;
+  font-weight: 700;
+}
+
+footer {
+  grid-area: footer;
+  background-color: #FFF;
+  text-align: center;
+}
+/*# sourceMappingURL=style.css.map */
