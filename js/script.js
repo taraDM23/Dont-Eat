@@ -114,25 +114,24 @@ $("#button-search").on("click", function RenderOutput(event) {
         ratingTextDiv.addClass("ratingTextClass")
         resultsDiv.append(ratingTextDiv); 
 
-      const photosArray = restaurantData.photos
+ /*      const photosArray = restaurantData.photos
       console.log(photosArray)
-
       for( j = 0; j < photosArray.length; j++) {
-
       const imgData = photosArray[j];
       console.log(imgData)
-
-       if (imgData) {
+      var photoCount = restaurantData.photo_count
       var imgURL = imgData.photo.url;
       let img = $("<img>").attr("src", imgURL);
       img.addClass("imageClass");
       resultsDiv.append(img);
       }
+       if (photosArray == true) {
+        renderPhoto()
+      }
       else {
-      
       var noImg = $("<p> "+ "No images to display" +"</p>");
       resultsDiv.append(noImg);
-      }}
+      }} */
     
         const {
           restaurant: {
