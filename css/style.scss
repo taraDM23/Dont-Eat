@@ -25,6 +25,7 @@ $desktop: 1085px;
   padding: 0;
 }
 
+// =================== general ====================
 :root {
   font-size: 16px;
   --fs-h1: calc(2rem + 2.75vw);
@@ -37,8 +38,6 @@ body, html {
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: colour(dark);
-
-  
 
   #bg {
     clip-path: polygon(0 0, 100% 0, 100% 35%, 0 65%);
