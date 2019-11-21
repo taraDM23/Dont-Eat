@@ -183,15 +183,23 @@ function initMap() {
   map = new google.maps.Map(
     document.querySelector(".map-box"), {zoom: 10, center: {lat: 0, lng: 0}});
 
+    var infowindow = new google.maps.InfoWindow();
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      new google.maps.Marker({position: pos , map: map});
-
+      marker = new google.maps.Marker({position: pos , map: map});
       map.setCenter(pos);
+
+    
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+        infowindow.setContent("You are here")
+      });
+
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
     });
