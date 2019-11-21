@@ -1,9 +1,9 @@
 // ==================== global variables ====================
 let cuisinesObj = {};
 let cuisineId;
-
 var cuisineInput;
 var cuisineInputFormatted;
+let searchCity
 var lat;
 var lon;
 var map;
@@ -12,7 +12,8 @@ var map;
 function RenderOutput() {
   $(".results-box").html("");
 
-  let searchCity = $("#input-city").val().trim();
+  searchCity = $("#input-city").val().trim();
+  
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
