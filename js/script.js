@@ -152,25 +152,31 @@ function RenderOutput() {
     
         // =================== lat lon API here ===================
 
-       // restaurantLocation
+        var infowindow = new google.maps.InfoWindow();
+        var i;
       for(i=0; i<restaurantLocation.length; i++){
         var pos1 = {
           lat: parseFloat(restaurantLocation[i].lat),
-          lng: parseFloat(restaurantLocation[i].long)
+          lng: parseFloat(restaurantLocation[i].long),
+          name: restaurantLocation[i].name
         };
-        new google.maps.Marker({position: pos1 , map: map});
-
-
+        marker = new google.maps.Marker({position: pos1 , map: map});
+        google.maps.event.addListener(marker,'click', (function(marker, i) {
+          return function(){
+            infowindow.open(map, marker);
+            infowindow.setContent(restaurantLocation[i].name)
+          }
+        })(marker, i));
       }
       var pos2 = {
         lat: lat,
         lng: lon
       }; 
         map.setCenter(pos2);
-
+      
         // ===========================================================
     
-      }) 
+      })
     
     })
     
