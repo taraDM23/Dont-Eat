@@ -172,6 +172,7 @@ function RenderOutput() {
         lat: lat,
         lng: lon
       }; 
+      
         map.setCenter(pos2);
       
         // ===========================================================
