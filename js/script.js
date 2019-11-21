@@ -15,6 +15,8 @@ var map;
 
 // ==================== functions ====================
 function RenderOutput() {
+  $(".results-box").html("");
+
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
@@ -238,6 +240,9 @@ function initMap() {
 };
 // ==================== event listeners ====================
 $("#button-search").on("click", RenderOutput);
+
+//==================reset search =====================
+//$("p").html("");
 
 // ==================== send to top ====================
 
