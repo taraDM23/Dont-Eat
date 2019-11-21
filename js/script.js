@@ -163,25 +163,32 @@ function RenderOutput() {
     
         // =================== lat lon API here ===================
 
-       // restaurantLocation
+        var infowindow = new google.maps.InfoWindow();
+        var i;
       for(i=0; i<restaurantLocation.length; i++){
         var pos1 = {
           lat: parseFloat(restaurantLocation[i].lat),
-          lng: parseFloat(restaurantLocation[i].long)
+          lng: parseFloat(restaurantLocation[i].long),
+          name: restaurantLocation[i].name
         };
-        new google.maps.Marker({position: pos1 , map: map});
-
-
+        marker = new google.maps.Marker({position: pos1 , map: map});
+        google.maps.event.addListener(marker,'click', (function(marker, i) {
+          return function(){
+            infowindow.open(map, marker);
+            infowindow.setContent(restaurantLocation[i].name)
+          }
+        })(marker, i));
       }
       var pos2 = {
         lat: lat,
         lng: lon
       }; 
+      
         map.setCenter(pos2);
-
+      
         // ===========================================================
     
-      }) 
+      })
     
     })
     
@@ -194,15 +201,23 @@ function initMap() {
   map = new google.maps.Map(
     document.querySelector(".map-box"), {zoom: 10, center: {lat: 0, lng: 0}});
 
+    var infowindow = new google.maps.InfoWindow();
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       var pos = {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
-      new google.maps.Marker({position: pos , map: map});
-
+      marker = new google.maps.Marker({position: pos , map: map});
       map.setCenter(pos);
+
+    
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+        infowindow.setContent("You are here")
+      });
+
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
     });
@@ -214,8 +229,8 @@ function initMap() {
   function handleLocationError(browserHasGeolocation, infoWindow, pos) {
     infoWindow.setPosition(pos);
     infoWindow.setContent(browserHasGeolocation ?
-                      'Error: The Geolocation service failed.' :
-                      'Error: Your browser doesn\'t support geolocation.');
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
     infoWindow.open(map);
   };
 
