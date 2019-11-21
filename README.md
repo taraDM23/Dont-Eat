@@ -39,12 +39,12 @@ So that I can avoid them.
 
 
 ## Wireframe/sketch of the design.
-**** add pics
+**** add pics **********
 
 
 ## How to Use
 * User agrees to Google browser settings to track location. 
-** Please note that this "alert" can not be modified
+* * Please note that this "alert" can not be modified
 * User enters a location e.g. Caulfeild, Richmond
 * User enters a cuisine
 * Click "Search" button
@@ -70,34 +70,34 @@ Project is created with:
 * Chrome browser - base line 
 
 * Firefox browser
-** Responsiveness - Y/N
-** Does the UI change? - Y/N
-** Any browser variations? - Y/N
-** Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y/N
+  * Does the UI change? - Y/N
+  * Any browser variations? - Y/N
+  * Expected and Actual behavior are the same? Y/N
 
 * Edge
-** Responsiveness - Y/N
-** Does the UI change? - Y/N
-** Any browser variations? - Y/N
-** Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y/N
+  * Does the UI change? - Y/N
+  * Any browser variations? - Y/N
+  * Expected and Actual behavior are the same? Y/N
 
 * Safari browser
-** Responsiveness - Y/N
-** Does the UI change? - Y/N
-** Any browser variations? - Y/N
-** Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y/N
+  * Does the UI change? - Y/N
+  * Any browser variations? - Y/N
+  * Expected and Actual behavior are the same? Y/N
 
 * Android mobile Chrome
-** Responsiveness - Y/N
-** Does the UI change? - Y/N
-** Any browser variations? - Y/N
-** Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y/N
+  * Does the UI change? - Y/N
+  * Any browser variations? - Y/N
+  * Expected and Actual behavior are the same? Y/N
 
 * Apple mobile browser
-** Responsiveness - Y/N
-** Does the UI change? - Y/N
-** Any browser variations? - Y/N
-** Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y/N
+  * Does the UI change? - Y/N
+  * Any browser variations? - Y/N
+  * Expected and Actual behavior are the same? Y/N
 
 #### Code test:
 HTML was verified via https://validator.w3.org/nu/ with no errors or warnings.
@@ -106,8 +106,6 @@ HTML was verified via https://validator.w3.org/nu/ with no errors or warnings.
 * The results rendered by the application are 100% dependant on the api used. As such we the developers are restricted by what is allowed by the api owner. 
 * Both third party API accounts are using the free version. These restrictions have been adhered to.
 * This application can be constituted as an MVP (minimum viable product). Therefore the options to customize search results are limited to two dynamic input felids. 
-
-
 
 
 ## Authors of Sections 
@@ -121,5 +119,9 @@ Monash coding Bootcamp academic staff
 
 ## Other Information
 [Presentation Slides](https://docs.google.com/presentation/d/1QRzD4g4H4aSFb3GdBYLFFfzwQww1RpaXg9p33dIp1f4/edit?usp=sharing)
+
+###### Sources
+* 
+* 
 
 
