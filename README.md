@@ -44,7 +44,7 @@ So that I can avoid them.
 
 ## How to Use
 * User agrees to Google browser settings to track location. 
-* * Please note that this "alert" can not be modified
+  * Please note that this "alert" can not be modified
 * User enters a location e.g. Caulfeild, Richmond
 * User enters a cuisine
 * Click "Search" button
