@@ -63,7 +63,7 @@ function RenderOutput() {
       console.log({cuisinesObj});
 
       if (!cuisinesObj[cuisineInputFormatted]) {
-        var errorMsg = ("Oops! we cant find  " + cuisineInputFormatted + ". \n Please try again.");
+        var errorMsg = ("    \n   Oops! we cant find  " + cuisineInputFormatted + ". \n Please try again.     \n");
         noty({
         type: 'alert', 
         layout: 'topCenter',
