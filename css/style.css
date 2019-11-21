@@ -8,6 +8,7 @@
 
 :root {
   font-size: 16px;
+  --fs-h1: calc(2rem + 2.75vw);
 }
 
 body, html {
@@ -32,6 +33,7 @@ body #bg {
 h1 {
   text-align: center;
   padding: 20px 0 40px 0;
+  font-size: var(--fs-h1);
 }
 
 main {
@@ -44,12 +46,26 @@ main {
   gap: 20px;
 }
 
+@media (min-width: 1085px) {
+  main {
+    -ms-grid-columns: 0.5fr minmax(auto, 700px) minmax(auto, 700px) 0.5fr;
+        grid-template-columns: 0.5fr minmax(auto, 700px) minmax(auto, 700px) 0.5fr;
+        grid-template-areas: ". search map ." ". results results .";
+  }
+}
+
 main .search-container {
   -ms-grid-row: 1;
   -ms-grid-column: 1;
   grid-area: search;
   width: 100%;
   padding: 0 20px;
+}
+
+@media (min-width: 1085px) {
+  main .search-container {
+    padding-top: 50px;
+  }
 }
 
 main .search-container form .form-box {

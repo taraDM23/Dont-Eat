@@ -1,8 +1,17 @@
+// ==================== sass variables, mixins, functions ====================
 $colours: (
   dark: #2A2D43,
   light: #FFA9E7,
   white: #FFF
 );
+
+$desktop: 1085px;
+
+@mixin desktop {
+  @media (min-width: #{$desktop}) {
+    @content;
+  }
+}
 
 @function colour($colour-name) {
   @return map-get($colours, $colour-name)
@@ -18,6 +27,7 @@ $colours: (
 
 :root {
   font-size: 16px;
+  --fs-h1: calc(2rem + 2.75vw);
 }
 
 body, html {
@@ -44,6 +54,7 @@ body {
 h1  {
   text-align: center;
   padding: 20px 0 40px 0;
+  font-size: var(--fs-h1);
 }
 
 // ==================== main ====================
@@ -58,10 +69,22 @@ main  {
     ;
   gap: 20px;
 
+  @include desktop {
+    grid-template-columns: 0.5fr minmax(auto, 700px) minmax(auto, 700px) 0.5fr;
+    grid-template-areas: 
+    ". search map ."
+    ". results results ."
+    ;
+  }
+
   .search-container {
     grid-area: search;
     width: 100%;
     padding: 0 20px;
+
+    @include desktop {
+      padding-top: 50px;
+    }
 
     form {
 
