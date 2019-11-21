@@ -58,6 +58,42 @@ Project is created with:
 * Google maps api
 * Jquery plugin noty
 
+#### Quality Assurance Tests:
 
+##### Responsiveness and CSS per browser
+* Chrome browser - base line 
+
+* Firefox browser
+** Responsiveness - Y/N
+** Does the UI change? - Y/N
+** Any browser variations? - Y/N
+** Expected and Actual behavior are the same? Y/N
+
+* Edge
+** Responsiveness - Y/N
+** Does the UI change? - Y/N
+** Any browser variations? - Y/N
+** Expected and Actual behavior are the same? Y/N
+
+* Safari browser
+** Responsiveness - Y/N
+** Does the UI change? - Y/N
+** Any browser variations? - Y/N
+** Expected and Actual behavior are the same? Y/N
+
+* Android mobile Chrome
+** Responsiveness - Y/N
+** Does the UI change? - Y/N
+** Any browser variations? - Y/N
+** Expected and Actual behavior are the same? Y/N
+
+* Apple mobile browser
+** Responsiveness - Y/N
+** Does the UI change? - Y/N
+** Any browser variations? - Y/N
+** Expected and Actual behavior are the same? Y/N
+
+#### Code test:
+HTML was verified via https://validator.w3.org/nu/ with no errors or warnings.
 
 
