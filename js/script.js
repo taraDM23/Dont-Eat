@@ -4,24 +4,21 @@ let cuisineId;
 
 var cuisineInput;
 var cuisineInputFormatted;
-
-var cityInput = $("#input-city").val().trim();
-let searchCity = "New York" // hard coded for now
-
 var lat;
 var lon;
-
 var map;
 
 // ==================== functions ====================
 function RenderOutput() {
   $(".results-box").html("");
 
+  let searchCity = $("#input-city").val().trim();
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
   // ==================== Zomato city API ====================
   let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
+  console.log(searchCity)
 
   $.ajax({
     url: cityURL,
@@ -197,7 +194,7 @@ function RenderOutput() {
   })
 
 };
-// ======================Keegans code =========================
+// ====================== Load map =========================
 function initMap() {
   // Step 1
   map = new google.maps.Map(
@@ -211,6 +208,8 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
+      console.log(pos)
+
       marker = new google.maps.Marker({position: pos , map: map});
       map.setCenter(pos);
 
