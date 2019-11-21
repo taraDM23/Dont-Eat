@@ -96,4 +96,24 @@ Project is created with:
 #### Code test:
 HTML was verified via https://validator.w3.org/nu/ with no errors or warnings.
 
+##### Limitations:
+* The results rendered by the application are 100% dependant on the api used. As such we the developers are restricted by what is allowed by the api owner. 
+* Both third party API accounts are using the free version. These restrictions have been adhered to.
+* This application can be constituted as an MVP (minimum viable product). Therefore the options to customize search results are limited to two dynamic input felids. 
+
+
+
+
+## Authors of Sections 
+* Charles - Zomato API, Google Maps API, Sass,
+* Keegan - Google Maps API, 
+* Tara - Zomato API, Google Maps API, Css, scroll to top, noty modal
+
+
+#### Acknowledgments
+Monash coding Bootcamp academic staff
+
+## Other Information
+[Presentation Slides](https://docs.google.com/presentation/d/1QRzD4g4H4aSFb3GdBYLFFfzwQww1RpaXg9p33dIp1f4/edit?usp=sharing)
+
 
