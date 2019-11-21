@@ -13,12 +13,13 @@ function RenderOutput() {
   $(".results-box").html("");
 
   searchCity = $("#input-city").val().trim();
-  
+
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
   // ==================== Zomato city API ====================
-  let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
+  //let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
+  let cityURL = "https://developers.zomato.com/api/v2.1/search?q=" + searchCity + "&sort=rating&order=asc"
   console.log(searchCity)
 
   $.ajax({
@@ -30,15 +31,21 @@ function RenderOutput() {
     }
   })
   .then(function(response) {
+    console.log(response)
 
-    let cityName = response.location_suggestions[0].city_name;
-    let cityCountry = response.location_suggestions[0].country_name;
+    //let cityName = response.location_suggestions[0].city_name;
+    let cityName = response.restaurants[0].restaurant.location.city
+    //let cityCountry = response.location_suggestions[0].country_name;
+    let LocalityName = response.restaurants[0].restaurant.location.locality
 
-    let city = (cityName + ", " + cityCountry);
+    //let city = (cityName + ", " + cityCountry);
+    let city = (LocalityName + ", " + cityName);
     console.log({city}); 
 
-    lat = response.location_suggestions[0].latitude;
-    lon = response.location_suggestions[0].longitude;
+   // lat = response.location_suggestions[0].latitude;
+   // lon = response.location_suggestions[0].longitude;
+    lat = response.restaurants[0].restaurant.location.latitude;
+    lon = response.restaurants[0].restaurant.location.longitude;
 
     console.log(lat + " & " + lon);
 
@@ -242,7 +249,6 @@ function initMap() {
 $("#button-search").on("click", RenderOutput);
 
 // ==================== send to top ====================
-
 
 var sendToTop = document.getElementById("Top");
 
