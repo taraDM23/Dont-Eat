@@ -32,6 +32,12 @@ This project was managed by utilizing scrum practices. Tasks were broken down by
 * Jobs progression was tracked on a Kanban board.
 * scrum stand-up ceremony was practiced when the team was physically present.
 
+#### User Story
+As a hungry individual,
+I want a list of bad restaurants 
+So that I can avoid them.
+
+
 ## Wireframe/sketch of the design.
 **** add pics
 
