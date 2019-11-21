@@ -89,10 +89,6 @@ main .search-container form .form-box #button-search {
   background-color: #FFA9E7;
 }
 
-main .search-container form .form-box #button-search:hover {
-  font-size: 1rem;
-}
-
 main .map-container {
   -ms-grid-row: 2;
   -ms-grid-column: 1;

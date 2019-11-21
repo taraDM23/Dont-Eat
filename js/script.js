@@ -18,7 +18,7 @@ function RenderOutput() {
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
-  // ==================== city API ====================
+  // ==================== Zomato city API ====================
   let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
 
   $.ajax({
@@ -42,7 +42,7 @@ function RenderOutput() {
 
     console.log(lat + " & " + lon);
 
-    // ==================== cuisines API ====================
+    // ==================== Zomato cuisines API ====================
     let cuisineURL = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`;
 
     $.ajax({
@@ -63,14 +63,25 @@ function RenderOutput() {
       console.log({cuisinesObj});
 
       if (!cuisinesObj[cuisineInputFormatted]) {
-        alert("Sorry, " + cuisineInputFormatted + " food is not available in your area. Please search for something else");
+        var errorMsg = ("    \n   Oops! we cant find  " + cuisineInputFormatted + ". \n Please try again.     \n");
+        noty({
+        type: 'alert', 
+        layout: 'topCenter',
+        theme: 'relax', 
+        text:(errorMsg),
+        timeout: false,
+        maxVisible: 1, 
+        closeWith: ['click'],
+        killer: false,
+        })
+        
         return;
       }
 
       cuisineId = parseInt(cuisinesObj[cuisineInputFormatted]);
       console.log({cuisineId});
 
-      // ==================== search API ====================
+      // ==================== Zomato search API ====================
       let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
     
       $.ajax({
@@ -227,3 +238,23 @@ function initMap() {
 };
 // ==================== event listeners ====================
 $("#button-search").on("click", RenderOutput);
+
+// ==================== send to top ====================
+
+
+var sendToTop = document.getElementById("Top");
+
+window.onscroll = function() {scroll()};
+
+function scroll() {
+  if (document.body.scrollTop > 30 || document.documentElement.scrollTop > 20) {
+    sendToTop.style.display = "block";
+  } else {
+    sendToTop.style.display = "none";
+  }
+}
+
+function send2Top() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
