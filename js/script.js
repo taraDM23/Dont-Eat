@@ -7,11 +7,13 @@ let searchCity
 var lat;
 var lon;
 var map;
+var restaurantLocation = [];
 
 // ==================== functions ====================
 function RenderOutput() {
   $(".results-box").html("");
-
+  //deleteMarkers()
+  
   searchCity = $("#input-city").val().trim();
 
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
@@ -172,7 +174,7 @@ function RenderOutput() {
 
         var infowindow = new google.maps.InfoWindow();
         var i;
-      for(i=0; i<restaurantLocation.length; i++){
+      for(i = 0; i<restaurantLocation.length; i++){
         var pos1 = {
           lat: parseFloat(restaurantLocation[i].lat),
           lng: parseFloat(restaurantLocation[i].long),
@@ -192,8 +194,8 @@ function RenderOutput() {
       }; 
       
         map.setCenter(pos2);
-      
-        // ===========================================================
+   
+        // ========================================================
     
       })
     
@@ -265,4 +267,15 @@ function scroll() {
 function send2Top() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
+}
+
+
+//===================
+function clearMarkers() {
+  setMapOnAll(null);
+}
+
+function deleteMarkers() {
+  clearMarkers();
+  restaurantLocation = [];
 }
