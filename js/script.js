@@ -241,9 +241,6 @@ function initMap() {
 // ==================== event listeners ====================
 $("#button-search").on("click", RenderOutput);
 
-//==================reset search =====================
-//$("p").html("");
-
 // ==================== send to top ====================
 
 
