@@ -285,10 +285,11 @@ function setMapArray() {
 for (j = 0; j< markersArray.length ; j++)
 markersArray[j].setMap(map)
 }
-
+// hide markers in array
 function clearMarkers() {
   setMapArray(null);
 }
+
 
 
 
