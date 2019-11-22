@@ -62,6 +62,7 @@ Project is created with:
 * Sass
 * Zomato free API
 * Google maps api
+* Opencage Data API
 * Jquery plugin noty
 
 #### Quality Assurance Tests:
@@ -111,7 +112,7 @@ HTML was verified via https://validator.w3.org/nu/ with no errors or warnings.
 #### Authors of Sections 
 * Charles - Zomato API, Google Maps API, Sass,
 * Keegan - Google Maps API, 
-* Tara - Zomato API, Google Maps API, Css, scroll to top, noty modal
+* Tara - Zomato API, Opencage Data API, Css, scroll to top, noty modal
 
 
 #### Acknowledgments
