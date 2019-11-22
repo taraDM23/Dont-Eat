@@ -13,7 +13,7 @@ let markersArray =  [];
 // ==================== functions ====================
 function RenderOutput() {
   $(".results-box").html("");
-  clearMarkers ()
+  //clearMarkers ();
   
   searchCity = $("#input-city").val().trim();
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
@@ -38,16 +38,16 @@ function RenderOutput() {
       maxVisible: 1, 
       closeWith: ['click'],
       killer: false,
-      })
+      });
     }}
   })
 
   .then(function (response) {
     console.log(response)
-    lat = response.results[1].geometry.lat;
-    console.log(response.results[1].geometry.lat)
-    lon = response.results[1].geometry.lng
-    console.log(response.results[1].geometry.lng)
+    lat = response.results[0].geometry.lat;
+    console.log(response.results[0].geometry.lat)
+    lon = response.results[0].geometry.lng
+    console.log(response.results[0].geometry.lng)
 
     console.log(lat + " & " + lon);
 
@@ -281,7 +281,7 @@ function send2Top() {
 
 //=================== Clear map markers ============
 
-function setMapArray() {
+function setMapArray() { //(map)
 for (j = 0; j< markersArray.length ; j++)
 markersArray[j].setMap(map)
 }
