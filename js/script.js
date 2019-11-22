@@ -15,44 +15,29 @@ function RenderOutput() {
   //deleteMarkers()
   
   searchCity = $("#input-city").val().trim();
-
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
-  // ==================== Zomato city API ====================
-  //let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
-  let cityURL = "https://developers.zomato.com/api/v2.1/search?q=" + searchCity + "&sort=rating&order=asc"
+    // ==================== Forward geocoding API ====================
+  let cityURL = "https://api.opencagedata.com/geocode/v1/json?q=" + searchCity + "&key=ee1957d472fa4faf8e8c6f28f2a72285"
   console.log(searchCity)
-
+  
   $.ajax({
     url: cityURL,
-    method: "GET",
-    headers: {
-      "Accept": "application/json",
-      "user-key": "911458285a16e49504124550033c5a36"
-    }
+    method: "GET"
   })
-  .then(function(response) {
-    console.log(response)
 
-    //let cityName = response.location_suggestions[0].city_name;
-    let cityName = response.restaurants[0].restaurant.location.city
-    //let cityCountry = response.location_suggestions[0].country_name;
-    let LocalityName = response.restaurants[0].restaurant.location.locality
+  .then(function (response) {
+  console.log(response)
+  lat = response.results[0].geometry.lat;
+  console.log(response.results[0].geometry.lat)
+  lon = response.results[0].geometry.lng
+  console.log(response.results[0].geometry.lng)
 
-    //let city = (cityName + ", " + cityCountry);
-    let city = (LocalityName + ", " + cityName);
-    console.log({city}); 
-
-   // lat = response.location_suggestions[0].latitude;
-   // lon = response.location_suggestions[0].longitude;
-    lat = response.restaurants[0].restaurant.location.latitude;
-    lon = response.restaurants[0].restaurant.location.longitude;
-
-    console.log(lat + " & " + lon);
+  console.log(lat + " & " + lon);
 
     // ==================== Zomato cuisines API ====================
-    let cuisineURL = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`;
+    let cuisineURL = "https://developers.zomato.com/api/v2.1/cuisines?lat=" + lat + "&lon=" + lon;
 
     $.ajax({
       url: cuisineURL,
@@ -68,11 +53,11 @@ function RenderOutput() {
       for(let i = 0; i < cuisines.length; i++) {
         cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
       };
-
       console.log({cuisinesObj});
 
       if (!cuisinesObj[cuisineInputFormatted]) {
-        var errorMsg = ("    \n   Oops! we cant find  " + cuisineInputFormatted + ". \n Please try again.     \n");
+
+        var errorMsg = ("    \n   Oops! we cant find badly rated " + cuisineInputFormatted + " food in your area. \n Try a different cuisine. \n");
         noty({
         type: 'alert', 
         layout: 'topCenter',
@@ -91,7 +76,7 @@ function RenderOutput() {
       console.log({cuisineId});
 
       // ==================== Zomato search API ====================
-      let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
+      let searchURL = "https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines=$"  + cuisineId + "&sort=rating&order=asc";
     
       $.ajax({
         url: searchURL,
@@ -99,7 +84,22 @@ function RenderOutput() {
         headers: {
           "Accept": "application/json",
           "user-key": "911458285a16e49504124550033c5a36"
-        }
+        },
+        statusCode: {
+        404: function () {
+        var errorCity = ("Location " + searchCity + " not found. Please try again.");
+        noty({
+        type: 'alert', 
+        layout: 'topCenter',
+        theme: 'relax', 
+        text:(errorCity),
+        timeout: false,
+        maxVisible: 1, 
+        closeWith: ['click'],
+        killer: false,
+        })
+      }
+    }
       })
       .then(function(response) {
         const restaurantArray = response.restaurants;
@@ -180,6 +180,7 @@ function RenderOutput() {
           lng: parseFloat(restaurantLocation[i].long),
           name: restaurantLocation[i].name
         };
+        (console.log(pos))
         marker = new google.maps.Marker({position: pos1 , map: map});
         google.maps.event.addListener(marker,'click', (function(marker, i) {
           return function(){
@@ -202,7 +203,6 @@ function RenderOutput() {
     })
     
   })
-
 };
 // ====================== Load map =========================
 function initMap() {
@@ -279,3 +279,60 @@ function deleteMarkers() {
   clearMarkers();
   restaurantLocation = [];
 }
+
+
+
+/* 
+
+// ==================== Zomato city API ====================
+  let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`
+
+  $.ajax({
+    url: cityURL,
+    method: "GET",
+    headers: {
+      "Accept": "application/json",
+      "user-key": "911458285a16e49504124550033c5a36"
+    }
+  })
+  .then(function(response) {
+    console.log(response)
+
+    let cityName = response.location_suggestions[0].city_name;   
+    let cityCountry = response.location_suggestions[0].country_name;
+    let city = (cityName + ", " + cityCountry);
+   
+    console.log({city}); 
+
+   lat = response.location_suggestions[0].latitude;
+   lon = response.location_suggestions[0].longitude;
+  
+
+    console.log(lat + " & " + lon);
+
+    //==============Zomato city api approach 2 ========================
+    let cityURL = "https://developers.zomato.com/api/v2.1/search?q=" + searchCity + "&sort=rating&order=asc"
+    console.log(searchCity)
+
+    $.ajax({
+    url: cityURL,
+    method: "GET",
+    headers: {
+      "Accept": "application/json",
+      "user-key": "911458285a16e49504124550033c5a36"
+    }
+  })
+  .then(function(response) {
+    console.log(response)
+   
+    let cityName = response.restaurants[0].restaurant.location.city
+    let LocalityName = response.restaurants[0].restaurant.location.locality
+
+    let city = (LocalityName + ", " + cityName);
+    console.log({city}); 
+
+    lat = response.restaurants[0].restaurant.location.latitude;
+    lon = response.restaurants[0].restaurant.location.longitude;
+
+    console.log(lat + " & " + lon);
+  } */
