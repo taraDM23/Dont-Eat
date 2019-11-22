@@ -172,7 +172,7 @@ function RenderOutput() {
     
         // =================== lat lon API here ===================
 
-        var infowindow = new google.maps.InfoWindow();
+        var infoWindow = new google.maps.InfoWindow();
         var i;
       for(i = 0; i<restaurantLocation.length; i++){
         var pos1 = {
@@ -180,12 +180,12 @@ function RenderOutput() {
           lng: parseFloat(restaurantLocation[i].long),
           name: restaurantLocation[i].name
         };
-        (console.log(pos))
+        (console.log(pos1))
         marker = new google.maps.Marker({position: pos1 , map: map});
         google.maps.event.addListener(marker,'click', (function(marker, i) {
           return function(){
-            infowindow.open(map, marker);
-            infowindow.setContent(restaurantLocation[i].name)
+            infoWindow.open(map, marker);
+            infoWindow.setContent(restaurantLocation[i].name)
           }
         })(marker, i));
       }
