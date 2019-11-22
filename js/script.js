@@ -76,7 +76,7 @@ function RenderOutput() {
       console.log({cuisineId});
 
       // ==================== Zomato search API ====================
-      let searchURL = "https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines=$"  + cuisineId + "&sort=rating&order=asc";
+      let searchURL = "https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines="  + cuisineId + "&sort=rating&order=asc";
     
       $.ajax({
         url: searchURL,
