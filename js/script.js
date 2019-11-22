@@ -3,7 +3,7 @@ let cuisinesObj = {};
 let cuisineId;
 var cuisineInput;
 var cuisineInputFormatted;
-let searchCity
+let searchCity;
 var lat;
 var lon;
 var map;
@@ -18,7 +18,7 @@ function RenderOutput() {
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
-    // ==================== Forward geocoding API ====================
+// ==================== Forward geocoding API ====================
   let cityURL = "https://api.opencagedata.com/geocode/v1/json?q=" + searchCity + "&key=ee1957d472fa4faf8e8c6f28f2a72285"
   console.log(searchCity)
   
@@ -28,18 +28,18 @@ function RenderOutput() {
   })
 
   .then(function (response) {
-  console.log(response)
-  lat = response.results[0].geometry.lat;
-  console.log(response.results[0].geometry.lat)
-  lon = response.results[0].geometry.lng
-  console.log(response.results[0].geometry.lng)
+    console.log(response)
+    lat = response.results[0].geometry.lat;
+    console.log(response.results[0].geometry.lat)
+    lon = response.results[0].geometry.lng
+    console.log(response.results[0].geometry.lng)
 
-  console.log(lat + " & " + lon);
+    console.log(lat + " & " + lon);
 
-    // ==================== Zomato cuisines API ====================
+// ==================== Zomato cuisines API ====================
     let cuisineURL = "https://developers.zomato.com/api/v2.1/cuisines?lat=" + lat + "&lon=" + lon;
 
-    $.ajax({
+      $.ajax({
       url: cuisineURL,
       method: "GET",
       headers: {
@@ -75,7 +75,7 @@ function RenderOutput() {
       cuisineId = parseInt(cuisinesObj[cuisineInputFormatted]);
       console.log({cuisineId});
 
-      // ==================== Zomato search API ====================
+  // ==================== Zomato search API ====================
       let searchURL = "https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines="  + cuisineId + "&sort=rating&order=asc";
     
       $.ajax({
@@ -84,8 +84,9 @@ function RenderOutput() {
         headers: {
           "Accept": "application/json",
           "user-key": "911458285a16e49504124550033c5a36"
-        },
-        statusCode: {
+      },
+
+      statusCode: {
         404: function () {
         var errorCity = ("Location " + searchCity + " not found. Please try again.");
         noty({
@@ -98,9 +99,9 @@ function RenderOutput() {
         closeWith: ['click'],
         killer: false,
         })
-      }
-    }
-      })
+      }}
+    })
+
       .then(function(response) {
         const restaurantArray = response.restaurants;
         console.log(restaurantArray);
@@ -131,7 +132,7 @@ function RenderOutput() {
               long: longitude
             }
           );  
-          
+          console.log(restaurantLocation)
           // const photosArray = restaurantData.photos;
           // let photos = [];
           
@@ -198,10 +199,8 @@ function RenderOutput() {
    
         // ========================================================
     
-      })
-    
-    })
-    
+      })    
+    })    
   })
 };
 // ====================== Load map =========================
