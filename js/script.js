@@ -1,52 +1,101 @@
 // ==================== global variables ====================
 let cuisinesObj = {};
 let cuisineId;
-
 var cuisineInput;
 var cuisineInputFormatted;
-
-var cityInput = $("#input-city").val().trim();
-let searchCity = "New York" // hard coded for now
-
+let searchCity;
 var lat;
 var lon;
-
 var map;
+var restaurantLocation = [];
+let markersArray =  [];
 
 // ==================== functions ====================
 function RenderOutput() {
+  $(".results-box").html("");
+  clearMarkers ();
+  
+  searchCity = $("#input-city").val().trim();
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
   cuisineInputFormatted = cuisineInput.charAt(0).toUpperCase() + cuisineInput.slice(1);
 
-  // ==================== Zomato city API ====================
-  let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`;
-
+// ==================== Forward geocoding API ====================
+  let cityURL = "https://api.opencagedata.com/geocode/v1/json?q=" + searchCity + "&key=ee1957d472fa4faf8e8c6f28f2a72285"
+  console.log(searchCity)
+  
   $.ajax({
     url: cityURL,
+    method: "GET",  
+    statusCode: {
+      400: function () {
+      var errorCity = ("Location " + searchCity + " not found. Please try again.");
+      noty({
+      type: 'alert', 
+      layout: 'topCenter',
+      theme: 'relax', 
+      text:(errorCity),
+      timeout: false,
+      maxVisible: 1, 
+      closeWith: ['click'],
+      killer: false,
+      });
+    }}
+  })
+
+  .then(function (response) {
+    console.log(response)
+    lat = response.results[0].geometry.lat;
+    console.log(response.results[0].geometry.lat)
+    lon = response.results[0].geometry.lng
+    console.log(response.results[0].geometry.lng)
+
+    console.log(lat + " & " + lon);
+
+// ==================== Zomato cuisines API ====================
+  let cuisineURL = "https://developers.zomato.com/api/v2.1/cuisines?lat=" + lat + "&lon=" + lon;
+
+  $.ajax({
+    url: cuisineURL,
     method: "GET",
     headers: {
       "Accept": "application/json",
       "user-key": "911458285a16e49504124550033c5a36"
     }
   })
+
   .then(function(response) {
+    let {cuisines} = response;
+      
+    for(let i = 0; i < cuisines.length; i++) {
+      cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
+    };
+      console.log({cuisinesObj});
 
-    let cityName = response.location_suggestions[0].city_name;
-    let cityCountry = response.location_suggestions[0].country_name;
+    if (!cuisinesObj[cuisineInputFormatted]) {
 
-    let city = (cityName + ", " + cityCountry);
-    console.log({city}); 
+    var errorMsg = ("    \n   Oops! we cant find badly rated " + cuisineInputFormatted + " food in your area. \n Try a different cuisine. \n");
+    noty({
+      type: 'alert', 
+      layout: 'topCenter',
+      theme: 'relax', 
+      text:(errorMsg),
+      timeout: false,
+      maxVisible: 1, 
+      closeWith: ['click'],
+      killer: false,
+    })
+        
+    return;
+  }
 
-    lat = response.location_suggestions[0].latitude;
-    lon = response.location_suggestions[0].longitude;
+    cuisineId = parseInt(cuisinesObj[cuisineInputFormatted]);
+    console.log({cuisineId});
 
-    console.log(lat + " & " + lon);
-
-    // ==================== Zomato cuisines API ====================
-    let cuisineURL = `https://developers.zomato.com/api/v2.1/cuisines?lat=${lat}&lon=${lon}`;
-
+  // ==================== Zomato search API ====================
+    let searchURL = "https://developers.zomato.com/api/v2.1/search?lat=" + lat + "&lon=" + lon + "&cuisines="  + cuisineId + "&sort=rating&order=asc";
+    
     $.ajax({
-      url: cuisineURL,
+      url: searchURL,
       method: "GET",
       headers: {
         "Accept": "application/json",
@@ -54,75 +103,35 @@ function RenderOutput() {
       }
     })
     .then(function(response) {
-      let {cuisines} = response;
-      
-      for(let i = 0; i < cuisines.length; i++) {
-        cuisinesObj[cuisines[i].cuisine.cuisine_name] = cuisines[i].cuisine.cuisine_id;
-      };
-
-      console.log({cuisinesObj});
-
-      if (!cuisinesObj[cuisineInputFormatted]) {
-        var errorMsg = ("    \n   Oops! we cant find  " + cuisineInputFormatted + ". \n Please try again.     \n");
-        noty({
-        type: 'alert', 
-        layout: 'topCenter',
-        theme: 'relax', 
-        text:(errorMsg),
-        timeout: false,
-        maxVisible: 1, 
-        closeWith: ['click'],
-        killer: false,
-        })
-        
-        return;
-      }
-
-      cuisineId = parseInt(cuisinesObj[cuisineInputFormatted]);
-      console.log({cuisineId});
-
-      // ==================== Zomato search API ====================
-      let searchURL = `https://developers.zomato.com/api/v2.1/search?lat=${lat}&lon=${lon}&cuisines=${cuisineId}&sort=rating&order=asc`;
+      const restaurantArray = response.restaurants;
+      console.log(restaurantArray);
     
-      $.ajax({
-        url: searchURL,
-        method: "GET",
-        headers: {
-          "Accept": "application/json",
-          "user-key": "911458285a16e49504124550033c5a36"
-        }
-      })
-      .then(function(response) {
-        const restaurantArray = response.restaurants;
-        console.log(restaurantArray);
+      let restaurantLocation = [];
+      for(let i = 0; i < restaurantArray.length; i++) {
     
-        let restaurantLocation = [];
-        for(let i = 0; i < restaurantArray.length; i++) {
+        const restaurantData = restaurantArray[i].restaurant
+        const restaurant = restaurantData.name;
+        const address = restaurantData.location.address.substring(0, restaurantData.location.address.indexOf(',')+1);
+        const addressCity = restaurantData.location.address.substring(restaurantData.location.address.indexOf(',')+1);
+        const rating = restaurantData.user_rating.aggregate_rating;
+        const ratingText = restaurantData.user_rating.rating_text;
     
-          const restaurantData = restaurantArray[i].restaurant
-          const restaurant = restaurantData.name;
-          const address = restaurantData.location.address.substring(0, restaurantData.location.address.indexOf(',')+1);
-          const addressCity = restaurantData.location.address.substring(restaurantData.location.address.indexOf(',')+1);
-          const rating = restaurantData.user_rating.aggregate_rating;
-          const ratingText = restaurantData.user_rating.rating_text;
-    
-          const {
+        const {
             restaurant: {
               location: {
-                latitude,
-                longitude,
-              }
+              latitude,
+              longitude,
             }
-          } = restaurantArray[i];
+          }
+        } = restaurantArray[i];
     
-          restaurantLocation.push(
-            {
-              name: restaurant,
-              lat: latitude,
-              long: longitude
-            }
-          );  
+        restaurantLocation.push({
+          name: restaurant,
+          lat: latitude,
+          long: longitude
+        });  
           
+    //console.log(restaurantLocation)
           // const photosArray = restaurantData.photos;
           // let photos = [];
           
@@ -134,74 +143,86 @@ function RenderOutput() {
           //   photos.push("https://via.placeholder.com/200");
           // }
           // const photos = "https://via.placeholder.com/100";
-          const photos = "http://lorempixel.com/100/100/food/";
+        const photos = "http://lorempixel.com/100/100/food/";
             
-          // ==================== display results ====================
-          let textDiv = $("<div/>", {"class": "text"});
+// ==================== display results ====================
+        let textDiv = $("<div/>", {"class": "text"});
 
-          let resultsDiv = $("<div>", {"class": "results-div"});
+        let resultsDiv = $("<div>", {"class": "results-div"});
 
-          let resDiv = $("<div/>", {"class": "restaurant details"}).append(restaurant);
-          textDiv.append(resDiv);
+        let resDiv = $("<div/>", {"class": "restaurant details"}).append(restaurant);
+        textDiv.append(resDiv);
 
-          let addDiv = $("<div/>", {"class": "address details"}).append(address);
-          textDiv.append(addDiv);
+        let addDiv = $("<div/>", {"class": "address details"}).append(address);
+        textDiv.append(addDiv);
 
-          let addCityDiv = $("<div/>", {"class": "address-city details"}).append(addressCity);
-          textDiv.append(addCityDiv);
+        let addCityDiv = $("<div/>", {"class": "address-city details"}).append(addressCity);
+        textDiv.append(addCityDiv);
 
-          let ratDiv = $("<div/>", {"class": "rating details"}).append(rating + " - " + ratingText);
-          textDiv.append(ratDiv);
+        let ratDiv = $("<div/>", {"class": "rating details"}).append(rating + " - " + ratingText);
+        textDiv.append(ratDiv);
           
-          let img = $("<img>").attr("src", photos);
-          let imgDiv = $("<div/>", {"class": "img"}).append(img);
-          resultsDiv.append(imgDiv);
+        let img = $("<img>").attr("src", photos);
+        let imgDiv = $("<div/>", {"class": "img"}).append(img);
+        resultsDiv.append(imgDiv);
         
-          resultsDiv.append(textDiv);
-          $("div.results-box").append(resultsDiv);
-        };
+        resultsDiv.append(textDiv);
+        $("div.results-box").append(resultsDiv);
+};
     
-        // =================== lat lon API here ===================
+// =================== lat lon API here ===================
+  function allMarkers(){
+  var infoWindow = new google.maps.InfoWindow();
+  var i;
+      
+  for(i = 0; i<restaurantLocation.length; i++){
+    var pos1 = {
+      lat: parseFloat(restaurantLocation[i].lat),
+      lng: parseFloat(restaurantLocation[i].long),
+      name: restaurantLocation[i].name
+    };
+        
+    (console.log(pos1))
+      
+      marker = new google.maps.Marker({position: pos1
+      //, map: map
+      });
+      markersArray.push(marker)
+      setMapArray()
+      google.maps.event.addListener(marker,'click', (function(marker, i) {
+          
+  return function(){
+      infoWindow.open(map, marker);
+      infoWindow.setContent(restaurantLocation[i].name)
+  }
+  })
 
-        var infowindow = new google.maps.InfoWindow();
-        var i;
-      for(i=0; i<restaurantLocation.length; i++){
-        var pos1 = {
-          lat: parseFloat(restaurantLocation[i].lat),
-          lng: parseFloat(restaurantLocation[i].long),
-          name: restaurantLocation[i].name
-        };
-        marker = new google.maps.Marker({position: pos1 , map: map});
-        google.maps.event.addListener(marker,'click', (function(marker, i) {
-          return function(){
-            infowindow.open(map, marker);
-            infowindow.setContent(restaurantLocation[i].name)
-          }
-        })(marker, i));
-      }
+  (marker, i)
+
+  )};
       var pos2 = {
         lat: lat,
         lng: lon
       }; 
       
-        map.setCenter(pos2);
-      
-        // ===========================================================
-    
-      })
-    
-    })
-    
-  })
+    map.setCenter(pos2);  
+  };
+
+  allMarkers() 
+}); 
+
+});  
+
+});
 
 };
-// ======================Keegans code =========================
+// ====================== Load map =========================
 function initMap() {
   // Step 1
   map = new google.maps.Map(
     document.querySelector(".map-box"), {zoom: 10, center: {lat: 0, lng: 0}});
 
-    var infowindow = new google.maps.InfoWindow();
+    var infoWindow = new google.maps.InfoWindow();
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -209,13 +230,15 @@ function initMap() {
         lat: position.coords.latitude,
         lng: position.coords.longitude
       };
+      console.log(pos)
+
       marker = new google.maps.Marker({position: pos , map: map});
       map.setCenter(pos);
 
     
       marker.addListener('click', function() {
-        infowindow.open(map, marker);
-        infowindow.setContent("You are here")
+        infoWindow.open(map, marker);
+        infoWindow.setContent("You are here")
       });
 
     }, function() {
@@ -239,8 +262,7 @@ function initMap() {
 // ==================== event listeners ====================
 $("#button-search").on("click", RenderOutput);
 
-// ==================== send to top ====================
-
+// ==================== send to top button ====================
 
 var sendToTop = document.getElementById("Top");
 
@@ -258,3 +280,75 @@ function send2Top() {
   document.body.scrollTop = 0;
   document.documentElement.scrollTop = 0;
 }
+
+//=================== Clear map markers ============
+
+function setMapArray() { //(map)
+for (j = 0; j< markersArray.length ; j++)
+markersArray[j].setMap(map)
+}
+// hide markers in array
+function clearMarkers() {
+  console.log(markersArray)
+  markersArray = [];
+  console.log(markersArray)
+  //setMapArray(null);
+}
+
+
+
+
+/* 
+
+// ==================== Zomato city API ====================
+  let cityURL = `https://developers.zomato.com/api/v2.1/locations?query=${searchCity}`
+
+  $.ajax({
+    url: cityURL,
+    method: "GET",
+    headers: {
+      "Accept": "application/json",
+      "user-key": "911458285a16e49504124550033c5a36"
+    }
+  })
+  .then(function(response) {
+    console.log(response)
+
+    let cityName = response.location_suggestions[0].city_name;   
+    let cityCountry = response.location_suggestions[0].country_name;
+    let city = (cityName + ", " + cityCountry);
+   
+    console.log({city}); 
+
+   lat = response.location_suggestions[0].latitude;
+   lon = response.location_suggestions[0].longitude;
+  
+
+    console.log(lat + " & " + lon);
+
+    //==============Zomato city api approach 2 ========================
+    let cityURL = "https://developers.zomato.com/api/v2.1/search?q=" + searchCity + "&sort=rating&order=asc"
+    console.log(searchCity)
+
+    $.ajax({
+    url: cityURL,
+    method: "GET",
+    headers: {
+      "Accept": "application/json",
+      "user-key": "911458285a16e49504124550033c5a36"
+    }
+  })
+  .then(function(response) {
+    console.log(response)
+   
+    let cityName = response.restaurants[0].restaurant.location.city
+    let LocalityName = response.restaurants[0].restaurant.location.locality
+
+    let city = (LocalityName + ", " + cityName);
+    console.log({city}); 
+
+    lat = response.restaurants[0].restaurant.location.latitude;
+    lon = response.restaurants[0].restaurant.location.longitude;
+
+    console.log(lat + " & " + lon);
+  } */
