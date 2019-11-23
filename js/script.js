@@ -13,7 +13,7 @@ let markersArray =  [];
 // ==================== functions ====================
 function RenderOutput() {
   $(".results-box").html("");
-  //clearMarkers ();
+  clearMarkers ();
   
   searchCity = $("#input-city").val().trim();
   cuisineInput = $("#input-cuisine").val().trim().toLowerCase();
@@ -184,7 +184,9 @@ function RenderOutput() {
         
     (console.log(pos1))
       
-      marker = new google.maps.Marker({position: pos1 , map: map});
+      marker = new google.maps.Marker({position: pos1
+      //, map: map
+      });
       markersArray.push(marker)
       setMapArray()
       google.maps.event.addListener(marker,'click', (function(marker, i) {
@@ -287,7 +289,10 @@ markersArray[j].setMap(map)
 }
 // hide markers in array
 function clearMarkers() {
-  setMapArray(null);
+  console.log(markersArray)
+  markersArray = [];
+  console.log(markersArray)
+  //setMapArray(null);
 }
 
 
