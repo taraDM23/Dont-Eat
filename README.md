@@ -71,28 +71,28 @@ Project is created with:
 * Chrome browser - base line 
 
 * Firefox browser
-  * Responsiveness - Y/N
-  * Does the UI change? - Y/N
-  * Any browser variations? - Y/N
-  * Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y
+  * Does the UI change? - N
+  * Any browser variations? - N
+  * Expected and Actual behavior are the same? Y
 
 * Edge
-  * Responsiveness - Y/N
-  * Does the UI change? - Y/N
-  * Any browser variations? - Y/N
-  * Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y
+  * Does the UI change? - N
+  * Any browser variations? - N
+  * Expected and Actual behavior are the same? Y
 
 * Safari browser
-  * Responsiveness - Y/N
-  * Does the UI change? - Y/N
-  * Any browser variations? - Y/N
-  * Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y
+  * Does the UI change? - N
+  * Any browser variations? - N
+  * Expected and Actual behavior are the same? N
 
 * Android mobile Chrome
-  * Responsiveness - Y/N
-  * Does the UI change? - Y/N
-  * Any browser variations? - Y/N
-  * Expected and Actual behavior are the same? Y/N
+  * Responsiveness - Y
+  * Does the UI change? - N
+  * Any browser variations? - N
+  * Expected and Actual behavior are the same? Y
 
 * Apple mobile browser
   * Responsiveness - Y/N
@@ -101,7 +101,7 @@ Project is created with:
   * Expected and Actual behavior are the same? Y/N
 
 #### Code test:
-HTML was verified via https://validator.w3.org/nu/ with no errors or warnings.
+HTML was verified via https://validator.w3.org/nu/ with no warnings.
 
 #### Limitations:
 * The results rendered by the application are 100% dependant on the api used. As such we the developers are restricted by what is allowed by the api owner. 
